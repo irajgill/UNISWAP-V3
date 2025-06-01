@@ -5,7 +5,7 @@ library Tick {
         bool initialized;
         uint128 liquidity;
     }
-    // src/lib/Tick.sol
+    
 function update(
     mapping(int24 => Tick.Info) storage self,
     int24 tick,
