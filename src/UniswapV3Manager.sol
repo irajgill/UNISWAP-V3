@@ -5,43 +5,36 @@ import "../src/UniswapV3Pool.sol";
 import "../src/interfaces/IERC20.sol";
 
 contract UniswapV3Manager {
-    address private poolAddress;
-    address private sender;
-
-    modifier withPool(address poolAddress_) {
-        poolAddress = poolAddress_;
-        _;
-        poolAddress = address(0x0);
-    }
-
-    modifier withSender() {
-        sender = msg.sender;
-        _;
-        sender = address(0x0);
-    }
-
     function mint(
         address poolAddress_,
         int24 lowerTick,
         int24 upperTick,
         uint128 liquidity,
         bytes calldata data
-    ) public withPool(poolAddress_) withSender {
-        UniswapV3Pool(poolAddress_).mint(
-            msg.sender,
-            lowerTick,
-            upperTick,
-            liquidity,
-            data
-        );
+    ) public returns (uint256, uint256) {
+        return
+            UniswapV3Pool(poolAddress_).mint(
+                msg.sender,
+                lowerTick,
+                upperTick,
+                liquidity,
+                data
+            );
     }
 
-    function swap(address poolAddress_, bytes calldata data)
-        public
-        withPool(poolAddress_)
-        withSender
-    {
-        UniswapV3Pool(poolAddress_).swap(msg.sender, data);
+    function swap(
+        address poolAddress_,
+        bool zeroForOne,
+        uint256 amountSpecified,
+        bytes calldata data
+    ) public returns (int256, int256) {
+        return
+            UniswapV3Pool(poolAddress_).swap(
+                msg.sender,
+                zeroForOne,
+                amountSpecified,
+                data
+            );
     }
 
     function uniswapV3MintCallback(
