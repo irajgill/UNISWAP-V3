@@ -1,66 +1,49 @@
-## Foundry
+# UNISWAP-V3
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This project demonstrates the core mechanics of a decentralized exchange (DEX), including smart contract development, liquidity management, and swaps.
 
-Foundry consists of:
+Uniswap V3 is a landmark in decentralized finance, introducing concentrated liquidity and advanced fee structures.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+---
 
-## Documentation
+## Key Concepts
 
-https://book.getfoundry.sh/
+- **How AMMs Work:**  
+  The core formula is  
+  \[
+  X x Y = K
+  \]
+  where \(x\) and \(y\) are token reserves and \(k\) is a constant.
 
-## Usage
+- Core Uniswap V3 smart contracts (factory, pools, manager, quoter, etc.)
+- Support for liquidity provision and swaps across custom price ranges
+- Cross-tick swaps, slippage protection, and fee management
+- NFT positions representing liquidity shares
 
-### Build
+---
 
-```shell
-$ forge build
-```
+## Getting Started
 
-### Test
+### Prerequisites
 
-```shell
-$ forge test
-```
+- Node.js
+- Foundry or Hardhat
+- MetaMask (for frontend interaction)
+- Git
 
-### Format
+---
 
-```shell
-$ forge fmt
-```
+### Installation
 
-### Gas Snapshots
+Clone the repository:
 
-```shell
-$ forge snapshot
-```
+#git clone https://github.com/irajgill/UNISWAP-V3.git
 
-### Anvil
+#cd UNISWAP-V3
 
-```shell
-$ anvil
-```
 
-### Deploy
+#### Install Dependencies
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+For the smart contracts (if using Foundry):
 
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+#forge install
