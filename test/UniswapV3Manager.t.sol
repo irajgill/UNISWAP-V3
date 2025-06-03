@@ -32,8 +32,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testMintInRange() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -46,21 +45,10 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         });
         (uint256 poolBalance0, uint256 poolBalance1) = setupTestCase(params);
 
-        (uint256 expectedAmount0, uint256 expectedAmount1) = (
-            0.987078348444137445 ether,
-            5000 ether
-        );
+        (uint256 expectedAmount0, uint256 expectedAmount1) = (0.987078348444137445 ether, 5000 ether);
 
-        assertEq(
-            poolBalance0,
-            expectedAmount0,
-            "incorrect weth deposited amount"
-        );
-        assertEq(
-            poolBalance1,
-            expectedAmount1,
-            "incorrect usdc deposited amount"
-        );
+        assertEq(poolBalance0, expectedAmount0, "incorrect weth deposited amount");
+        assertEq(poolBalance1, expectedAmount1, "incorrect usdc deposited amount");
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -80,8 +68,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testMintRangeBelow() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4000, 4996, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -94,21 +81,10 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         });
         (uint256 poolBalance0, uint256 poolBalance1) = setupTestCase(params);
 
-        (uint256 expectedAmount0, uint256 expectedAmount1) = (
-            0 ether,
-            4999.999999999999999994 ether
-        );
+        (uint256 expectedAmount0, uint256 expectedAmount1) = (0 ether, 4999.999999999999999994 ether);
 
-        assertEq(
-            poolBalance0,
-            expectedAmount0,
-            "incorrect weth deposited amount"
-        );
-        assertEq(
-            poolBalance1,
-            expectedAmount1,
-            "incorrect usdc deposited amount"
-        );
+        assertEq(poolBalance0, expectedAmount0, "incorrect weth deposited amount");
+        assertEq(poolBalance1, expectedAmount1, "incorrect usdc deposited amount");
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -128,8 +104,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testMintRangeAbove() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(5027, 6250, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 10 ether,
@@ -144,16 +119,8 @@ contract UniswapV3ManagerTest is Test, TestUtils {
 
         (uint256 expectedAmount0, uint256 expectedAmount1) = (1 ether, 0);
 
-        assertEq(
-            poolBalance0,
-            expectedAmount0,
-            "incorrect weth deposited amount"
-        );
-        assertEq(
-            poolBalance1,
-            expectedAmount1,
-            "incorrect usdc deposited amount"
-        );
+        assertEq(poolBalance0, expectedAmount0, "incorrect weth deposited amount");
+        assertEq(poolBalance1, expectedAmount1, "incorrect usdc deposited amount");
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -178,15 +145,9 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     // 4000 ------|------ 6250
     //
     function testMintOverlappingRanges() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](2);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](2);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
-        mints[1] = mintParams(
-            4000,
-            6250,
-            (1 ether * 75) / 100,
-            (5000 ether * 75) / 100
-        );
+        mints[1] = mintParams(4000, 6250, (1 ether * 75) / 100, (5000 ether * 75) / 100);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 3 ether,
             usdcBalance: 15000 ether,
@@ -198,10 +159,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         });
         setupTestCase(params);
 
-        (uint256 amount0, uint256 amount1) = (
-            1.733189275014643934 ether,
-            8750 ether
-        );
+        (uint256 amount0, uint256 amount1) = (1.733189275014643934 ether, 8750 ether);
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -213,8 +171,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
                 lowerTick: tick60(4545),
                 upperTick: tick60(5500),
                 positionLiquidity: liquidity(mints[0], 5000),
-                currentLiquidity: liquidity(mints[0], 5000) +
-                    liquidity(mints[1], 5000),
+                currentLiquidity: liquidity(mints[0], 5000) + liquidity(mints[1], 5000),
                 sqrtPriceX96: sqrtP(5000),
                 tick: tick(5000)
             })
@@ -229,8 +186,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
                 lowerTick: tick60(4000),
                 upperTick: tick60(6250),
                 positionLiquidity: liquidity(mints[1], 5000),
-                currentLiquidity: liquidity(mints[0], 5000) +
-                    liquidity(mints[1], 5000),
+                currentLiquidity: liquidity(mints[0], 5000) + liquidity(mints[1], 5000),
                 sqrtPriceX96: sqrtP(5000),
                 tick: tick(5000)
             })
@@ -243,21 +199,10 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     // 4000 ------ ------ 6250
     //      5000-1 5000+1
     function testMintPartiallyOverlappingRanges() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](3);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](3);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
-        mints[1] = mintParams(
-            4000,
-            4996,
-            (1 ether * 75) / 100,
-            (5000 ether * 75) / 100
-        );
-        mints[2] = mintParams(
-            5027,
-            6250,
-            (1 ether * 50) / 100,
-            (5000 ether * 50) / 100
-        );
+        mints[1] = mintParams(4000, 4996, (1 ether * 75) / 100, (5000 ether * 75) / 100);
+        mints[2] = mintParams(5027, 6250, (1 ether * 50) / 100, (5000 ether * 50) / 100);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 3 ether,
             usdcBalance: 15000 ether,
@@ -269,10 +214,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         });
         setupTestCase(params);
 
-        (uint256 amount0, uint256 amount1) = (
-            1.487078348444137445 ether,
-            8749.999999999999999994 ether
-        );
+        (uint256 amount0, uint256 amount1) = (1.487078348444137445 ether, 8749.999999999999999994 ether);
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -384,8 +326,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testMintInsufficientTokenBalance() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 0,
@@ -412,9 +353,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         weth.approve(address(manager), amount0);
         usdc.approve(address(manager), amount1);
 
-        vm.expectRevert(
-            encodeSlippageCheckFailed(0.987078348444137445 ether, 5000 ether)
-        );
+        vm.expectRevert(encodeSlippageCheckFailed(0.987078348444137445 ether, 5000 ether));
         manager.mint(
             IUniswapV3Manager.MintParams({
                 tokenA: address(weth),
@@ -445,8 +384,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testSwapBuyEth() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -463,10 +401,8 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         usdc.mint(address(this), swapAmount);
         usdc.approve(address(manager), swapAmount);
 
-        (uint256 userBalance0Before, uint256 userBalance1Before) = (
-            weth.balanceOf(address(this)),
-            usdc.balanceOf(address(this))
-        );
+        (uint256 userBalance0Before, uint256 userBalance1Before) =
+            (weth.balanceOf(address(this)), usdc.balanceOf(address(this)));
 
         uint256 amountOut = manager.swapSingle(
             IUniswapV3Manager.SwapSingleParams({
@@ -499,8 +435,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testSwapBuyUSDC() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -517,10 +452,8 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         weth.mint(address(this), swapAmount);
         weth.approve(address(manager), swapAmount);
 
-        (uint256 userBalance0Before, uint256 userBalance1Before) = (
-            weth.balanceOf(address(this)),
-            usdc.balanceOf(address(this))
-        );
+        (uint256 userBalance0Before, uint256 userBalance1Before) =
+            (weth.balanceOf(address(this)), usdc.balanceOf(address(this)));
 
         uint256 amountOut = manager.swapSingle(
             IUniswapV3Manager.SwapSingleParams({
@@ -553,8 +486,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testSwapBuyMultipool() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -572,16 +504,8 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         weth.approve(address(manager), 10 ether);
         uni.mint(address(this), 100 ether);
         uni.approve(address(manager), 100 ether);
-        UniswapV3Pool wethUNI = deployPool(
-            factory,
-            address(weth),
-            address(uni),
-            60,
-            10
-        );
-        manager.mint(
-            mintParams(address(weth), address(uni), 7, 13, 10 ether, 100 ether)
-        );
+        UniswapV3Pool wethUNI = deployPool(factory, address(weth), address(uni), 60, 10);
+        manager.mint(mintParams(address(weth), address(uni), 7, 13, 10 ether, 100 ether));
 
         uint256 swapAmount = 2.5 ether;
         uni.mint(address(this), swapAmount);
@@ -595,23 +519,11 @@ contract UniswapV3ManagerTest is Test, TestUtils {
             bytes20(address(usdc))
         );
 
-        (
-            uint256 userBalance0Before,
-            uint256 userBalance1Before,
-            uint256 userBalance2Before
-        ) = (
-                weth.balanceOf(address(this)),
-                usdc.balanceOf(address(this)),
-                uni.balanceOf(address(this))
-            );
+        (uint256 userBalance0Before, uint256 userBalance1Before, uint256 userBalance2Before) =
+            (weth.balanceOf(address(this)), usdc.balanceOf(address(this)), uni.balanceOf(address(this)));
 
         uint256 amountOut = manager.swap(
-            IUniswapV3Manager.SwapParams({
-                path: path,
-                recipient: address(this),
-                amountIn: swapAmount,
-                minAmountOut: 0
-            })
+            IUniswapV3Manager.SwapParams({path: path, recipient: address(this), amountIn: swapAmount, minAmountOut: 0})
         );
 
         uint256 expectedAmountOut = 1230.876321548630785194 ether;
@@ -632,11 +544,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
             })
         );
 
-        assertEq(
-            uni.balanceOf(address(this)),
-            userBalance2Before - swapAmount,
-            "invalid user UNI balance"
-        );
+        assertEq(uni.balanceOf(address(this)), userBalance2Before - swapAmount, "invalid user UNI balance");
         assertEq(
             uni.balanceOf(address(wethUNI)),
             102.5 ether, // 100 UNI minted + 2.5 UNI swapped
@@ -650,16 +558,11 @@ contract UniswapV3ManagerTest is Test, TestUtils {
             "invalid current sqrtP"
         );
         assertEq(currentTick, 23108, "invalid current tick");
-        assertEq(
-            pool.liquidity(),
-            1546311247949719370887,
-            "invalid current liquidity"
-        );
+        assertEq(pool.liquidity(), 1546311247949719370887, "invalid current liquidity");
     }
 
     function testSwapMixed() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -720,8 +623,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testSwapBuyEthNotEnoughLiquidity() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -751,8 +653,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testSwapBuyUSDCNotEnoughLiquidity() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -782,8 +683,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
     }
 
     function testSwapInsufficientInputAmount() public {
-        IUniswapV3Manager.MintParams[]
-            memory mints = new IUniswapV3Manager.MintParams[](1);
+        IUniswapV3Manager.MintParams[] memory mints = new IUniswapV3Manager.MintParams[](1);
         mints[0] = mintParams(4545, 5500, 1 ether, 5000 ether);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 1 ether,
@@ -823,26 +723,19 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         bool mintLiqudity;
     }
 
-    function mintParams(
-        uint256 lowerPrice,
-        uint256 upperPrice,
-        uint256 amount0,
-        uint256 amount1
-    ) internal view returns (IUniswapV3Manager.MintParams memory params) {
-        params = mintParams(
-            address(weth),
-            address(usdc),
-            lowerPrice,
-            upperPrice,
-            amount0,
-            amount1
-        );
+    function mintParams(uint256 lowerPrice, uint256 upperPrice, uint256 amount0, uint256 amount1)
+        internal
+        view
+        returns (IUniswapV3Manager.MintParams memory params)
+    {
+        params = mintParams(address(weth), address(usdc), lowerPrice, upperPrice, amount0, amount1);
     }
 
-    function liquidity(
-        IUniswapV3Manager.MintParams memory params,
-        uint256 currentPrice
-    ) internal pure returns (uint128 liquidity_) {
+    function liquidity(IUniswapV3Manager.MintParams memory params, uint256 currentPrice)
+        internal
+        pure
+        returns (uint128 liquidity_)
+    {
         liquidity_ = LiquidityMath.getLiquidityForAmounts(
             sqrtP(currentPrice),
             sqrtP60FromTick(params.lowerTick),
@@ -859,13 +752,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
         weth.mint(address(this), params.wethBalance);
         usdc.mint(address(this), params.usdcBalance);
 
-        pool = deployPool(
-            factory,
-            address(weth),
-            address(usdc),
-            60,
-            params.currentPrice
-        );
+        pool = deployPool(factory, address(weth), address(usdc), 60, params.currentPrice);
 
         if (params.mintLiqudity) {
             weth.approve(address(manager), params.wethBalance);
@@ -874,9 +761,7 @@ contract UniswapV3ManagerTest is Test, TestUtils {
             uint256 poolBalance0Tmp;
             uint256 poolBalance1Tmp;
             for (uint256 i = 0; i < params.mints.length; i++) {
-                (poolBalance0Tmp, poolBalance1Tmp) = manager.mint(
-                    params.mints[i]
-                );
+                (poolBalance0Tmp, poolBalance1Tmp) = manager.mint(params.mints[i]);
                 poolBalance0 += poolBalance0Tmp;
                 poolBalance1 += poolBalance1Tmp;
             }

@@ -74,16 +74,15 @@ contract UniswapV3QuoterTest is Test, TestUtils {
     }
 
     function testQuoteUSDCforETH() public {
-        (uint256 amountOut, uint160 sqrtPriceX96After, int24 tickAfter) = quoter
-            .quoteSingle(
-                UniswapV3Quoter.QuoteSingleParams({
-                    tokenIn: address(weth),
-                    tokenOut: address(usdc),
-                    tickSpacing: 60,
-                    amountIn: 0.01337 ether,
-                    sqrtPriceLimitX96: sqrtP(4993)
-                })
-            );
+        (uint256 amountOut, uint160 sqrtPriceX96After, int24 tickAfter) = quoter.quoteSingle(
+            UniswapV3Quoter.QuoteSingleParams({
+                tokenIn: address(weth),
+                tokenOut: address(usdc),
+                tickSpacing: 60,
+                amountIn: 0.01337 ether,
+                sqrtPriceLimitX96: sqrtP(4993)
+            })
+        );
 
         assertEq(amountOut, 66.809153442256308009 ether, "invalid amountOut");
         assertEq(
@@ -95,16 +94,15 @@ contract UniswapV3QuoterTest is Test, TestUtils {
     }
 
     function testQuoteETHforUSDC() public {
-        (uint256 amountOut, uint160 sqrtPriceX96After, int24 tickAfter) = quoter
-            .quoteSingle(
-                UniswapV3Quoter.QuoteSingleParams({
-                    tokenIn: address(usdc),
-                    tokenOut: address(weth),
-                    tickSpacing: 60,
-                    amountIn: 42 ether,
-                    sqrtPriceLimitX96: sqrtP(5005)
-                })
-            );
+        (uint256 amountOut, uint160 sqrtPriceX96After, int24 tickAfter) = quoter.quoteSingle(
+            UniswapV3Quoter.QuoteSingleParams({
+                tokenIn: address(usdc),
+                tokenOut: address(weth),
+                tickSpacing: 60,
+                amountIn: 42 ether,
+                sqrtPriceLimitX96: sqrtP(5005)
+            })
+        );
 
         assertEq(amountOut, 0.008396774627565324 ether, "invalid amountOut");
         assertEq(
@@ -127,11 +125,8 @@ contract UniswapV3QuoterTest is Test, TestUtils {
             bytes3(uint24(60)),
             bytes20(address(usdc))
         );
-        (
-            uint256 amountOut,
-            uint160[] memory sqrtPriceX96AfterList,
-            int24[] memory tickAfterList
-        ) = quoter.quote(path, 3 ether);
+        (uint256 amountOut, uint160[] memory sqrtPriceX96AfterList, int24[] memory tickAfterList) =
+            quoter.quote(path, 3 ether);
 
         assertEq(amountOut, 1472.545906750265423538 ether, "invalid amountOut");
         assertEq(
@@ -161,7 +156,7 @@ contract UniswapV3QuoterTest is Test, TestUtils {
             bytes3(uint24(60)),
             bytes20(address(usdc))
         );
-        (uint256 amountOut, , ) = quoter.quote(path, amountIn);
+        (uint256 amountOut,,) = quoter.quote(path, amountIn);
 
         uint256 amountOutActual = manager.swap(
             IUniswapV3Manager.SwapParams({
@@ -177,7 +172,7 @@ contract UniswapV3QuoterTest is Test, TestUtils {
 
     function testQuoteAndSwapUSDCforETH() public {
         uint256 amountIn = 0.01337 ether;
-        (uint256 amountOut, , ) = quoter.quoteSingle(
+        (uint256 amountOut,,) = quoter.quoteSingle(
             UniswapV3Quoter.QuoteSingleParams({
                 tokenIn: address(weth),
                 tokenOut: address(usdc),
@@ -187,14 +182,13 @@ contract UniswapV3QuoterTest is Test, TestUtils {
             })
         );
 
-        IUniswapV3Manager.SwapSingleParams memory swapParams = IUniswapV3Manager
-            .SwapSingleParams({
-                tokenIn: address(weth),
-                tokenOut: address(usdc),
-                tickSpacing: 60,
-                amountIn: amountIn,
-                sqrtPriceLimitX96: sqrtP(4993)
-            });
+        IUniswapV3Manager.SwapSingleParams memory swapParams = IUniswapV3Manager.SwapSingleParams({
+            tokenIn: address(weth),
+            tokenOut: address(usdc),
+            tickSpacing: 60,
+            amountIn: amountIn,
+            sqrtPriceLimitX96: sqrtP(4993)
+        });
         uint256 amountOutActual = manager.swapSingle(swapParams);
 
         assertEq(amountOutActual, amountOut, "invalid amount1Delta");
@@ -202,7 +196,7 @@ contract UniswapV3QuoterTest is Test, TestUtils {
 
     function testQuoteAndSwapETHforUSDC() public {
         uint256 amountIn = 55 ether;
-        (uint256 amountOut, , ) = quoter.quoteSingle(
+        (uint256 amountOut,,) = quoter.quoteSingle(
             UniswapV3Quoter.QuoteSingleParams({
                 tokenIn: address(usdc),
                 tokenOut: address(weth),
@@ -212,14 +206,13 @@ contract UniswapV3QuoterTest is Test, TestUtils {
             })
         );
 
-        IUniswapV3Manager.SwapSingleParams memory swapParams = IUniswapV3Manager
-            .SwapSingleParams({
-                tokenIn: address(usdc),
-                tokenOut: address(weth),
-                tickSpacing: 60,
-                amountIn: amountIn,
-                sqrtPriceLimitX96: sqrtP(5010)
-            });
+        IUniswapV3Manager.SwapSingleParams memory swapParams = IUniswapV3Manager.SwapSingleParams({
+            tokenIn: address(usdc),
+            tokenOut: address(weth),
+            tickSpacing: 60,
+            amountIn: amountIn,
+            sqrtPriceLimitX96: sqrtP(5010)
+        });
         uint256 amountOutActual = manager.swapSingle(swapParams);
 
         assertEq(amountOutActual, amountOut, "invalid amount0Delta");

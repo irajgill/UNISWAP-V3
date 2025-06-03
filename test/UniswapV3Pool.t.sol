@@ -27,9 +27,7 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
     }
 
     function testInitialize() public {
-        pool = UniswapV3Pool(
-            factory.createPool(address(weth), address(usdc), 60)
-        );
+        pool = UniswapV3Pool(factory.createPool(address(weth), address(usdc), 60));
 
         (uint160 sqrtPriceX96, int24 tick) = pool.slot0();
         assertEq(sqrtPriceX96, 0, "invalid sqrtPriceX96");
@@ -38,11 +36,7 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
         pool.initialize(sqrtP(31337));
 
         (sqrtPriceX96, tick) = pool.slot0();
-        assertEq(
-            sqrtPriceX96,
-            14025175117687921942002399182848,
-            "invalid sqrtPriceX96"
-        );
+        assertEq(sqrtPriceX96, 14025175117687921942002399182848, "invalid sqrtPriceX96");
         assertEq(tick, 103530, "invalid tick");
 
         vm.expectRevert(encodeError("AlreadyInitialized()"));
@@ -63,21 +57,10 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
         });
         (uint256 poolBalance0, uint256 poolBalance1) = setupTestCase(params);
 
-        (uint256 expectedAmount0, uint256 expectedAmount1) = (
-            0.987078348444137445 ether,
-            5000 ether
-        );
+        (uint256 expectedAmount0, uint256 expectedAmount1) = (0.987078348444137445 ether, 5000 ether);
 
-        assertEq(
-            poolBalance0,
-            expectedAmount0,
-            "incorrect weth deposited amount"
-        );
-        assertEq(
-            poolBalance1,
-            expectedAmount1,
-            "incorrect usdc deposited amount"
-        );
+        assertEq(poolBalance0, expectedAmount0, "incorrect weth deposited amount");
+        assertEq(poolBalance1, expectedAmount1, "incorrect usdc deposited amount");
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -110,21 +93,10 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
         });
         (uint256 poolBalance0, uint256 poolBalance1) = setupTestCase(params);
 
-        (uint256 expectedAmount0, uint256 expectedAmount1) = (
-            0 ether,
-            4999.999999999999999994 ether
-        );
+        (uint256 expectedAmount0, uint256 expectedAmount1) = (0 ether, 4999.999999999999999994 ether);
 
-        assertEq(
-            poolBalance0,
-            expectedAmount0,
-            "incorrect weth deposited amount"
-        );
-        assertEq(
-            poolBalance1,
-            expectedAmount1,
-            "incorrect usdc deposited amount"
-        );
+        assertEq(poolBalance0, expectedAmount0, "incorrect weth deposited amount");
+        assertEq(poolBalance1, expectedAmount1, "incorrect usdc deposited amount");
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -159,16 +131,8 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
 
         (uint256 expectedAmount0, uint256 expectedAmount1) = (1 ether, 0);
 
-        assertEq(
-            poolBalance0,
-            expectedAmount0,
-            "incorrect weth deposited amount"
-        );
-        assertEq(
-            poolBalance1,
-            expectedAmount1,
-            "incorrect usdc deposited amount"
-        );
+        assertEq(poolBalance0, expectedAmount0, "incorrect weth deposited amount");
+        assertEq(poolBalance1, expectedAmount1, "incorrect usdc deposited amount");
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -195,11 +159,7 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
     function testMintOverlappingRanges() public {
         LiquidityRange[] memory liquidity = new LiquidityRange[](2);
         liquidity[0] = liquidityRange(4545, 5500, 1 ether, 5000 ether, 5000);
-        liquidity[1] = liquidityRange(
-            4000,
-            6250,
-            (liquidity[0].amount * 75) / 100
-        );
+        liquidity[1] = liquidityRange(4000, 6250, (liquidity[0].amount * 75) / 100);
         TestCaseParams memory params = TestCaseParams({
             wethBalance: 3 ether,
             usdcBalance: 15000 ether,
@@ -211,10 +171,7 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
         });
         setupTestCase(params);
 
-        (uint256 amount0, uint256 amount1) = (
-            2.727580415500848720 ether,
-            13747.871823112733299810 ether
-        );
+        (uint256 amount0, uint256 amount1) = (2.72758041550084872 ether, 13747.87182311273329981 ether);
 
         assertMintState(
             ExpectedStateAfterMint({
@@ -284,13 +241,7 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
         setupTestCase(params);
 
         vm.expectRevert(encodeError("InsufficientInputAmount()"));
-        pool.mint(
-            address(this),
-            liquidity[0].lowerTick,
-            liquidity[0].upperTick,
-            liquidity[0].amount,
-            ""
-        );
+        pool.mint(address(this), liquidity[0].lowerTick, liquidity[0].upperTick, liquidity[0].amount, "");
     }
 
     function testFlash() public {
@@ -307,11 +258,7 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
         });
         setupTestCase(params);
 
-        pool.flash(
-            0.1 ether,
-            1000 ether,
-            abi.encodePacked(uint256(0.1 ether), uint256(1000 ether))
-        );
+        pool.flash(0.1 ether, 1000 ether, abi.encodePacked(uint256(0.1 ether), uint256(1000 ether)));
 
         assertTrue(flashCallbackCalled, "flash callback wasn't called");
     }
@@ -321,16 +268,9 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
     // CALLBACKS
     //
     ////////////////////////////////////////////////////////////////////////////
-    function uniswapV3MintCallback(
-        uint256 amount0,
-        uint256 amount1,
-        bytes calldata data
-    ) public {
+    function uniswapV3MintCallback(uint256 amount0, uint256 amount1, bytes calldata data) public {
         if (transferInMintCallback) {
-            IUniswapV3Pool.CallbackData memory extra = abi.decode(
-                data,
-                (IUniswapV3Pool.CallbackData)
-            );
+            IUniswapV3Pool.CallbackData memory extra = abi.decode(data, (IUniswapV3Pool.CallbackData));
 
             IERC20(extra.token0).transferFrom(extra.payer, msg.sender, amount0);
             IERC20(extra.token1).transferFrom(extra.payer, msg.sender, amount1);
@@ -338,10 +278,7 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
     }
 
     function uniswapV3FlashCallback(bytes calldata data) public {
-        (uint256 amount0, uint256 amount1) = abi.decode(
-            data,
-            (uint256, uint256)
-        );
+        (uint256 amount0, uint256 amount1) = abi.decode(data, (uint256, uint256));
 
         if (amount0 > 0) weth.transfer(msg.sender, amount0);
         if (amount1 > 0) usdc.transfer(msg.sender, amount1);
@@ -361,23 +298,13 @@ contract UniswapV3PoolTest is Test, UniswapV3PoolUtils {
         weth.mint(address(this), params.wethBalance);
         usdc.mint(address(this), params.usdcBalance);
 
-        pool = deployPool(
-            factory,
-            address(weth),
-            address(usdc),
-            60,
-            params.currentPrice
-        );
+        pool = deployPool(factory, address(weth), address(usdc), 60, params.currentPrice);
 
         if (params.mintLiqudity) {
             weth.approve(address(this), params.wethBalance);
             usdc.approve(address(this), params.usdcBalance);
 
-            bytes memory extra = encodeExtra(
-                address(weth),
-                address(usdc),
-                address(this)
-            );
+            bytes memory extra = encodeExtra(address(weth), address(usdc), address(this));
 
             uint256 poolBalance0Tmp;
             uint256 poolBalance1Tmp;
