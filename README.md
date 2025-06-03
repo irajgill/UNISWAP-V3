@@ -37,13 +37,44 @@ Uniswap V3 is a landmark in decentralized finance, introducing concentrated liqu
 
 Clone the repository:
 
-#git clone https://github.com/irajgill/UNISWAP-V3.git
+-git clone https://github.com/irajgill/UNISWAP-V3.git
 
-#cd UNISWAP-V3
+-cd UNISWAP-V3
 
 
 #### Install Dependencies
 
 For the smart contracts (if using Foundry):
 
-#forge install
+-forge install
+
+
+---
+
+## Usage
+
+### Build Contracts
+
+-forge build
+
+
+### Run Tests
+
+-forge test
+
+
+### Format Contracts
+
+-forge fmt
+
+
+### Local Ethereum Node
+
+-anvil
+
+
+### Deploy Contracts
+
+Update your RPC URL and private key, then run:
+
+-forge script script/Deploy.s.sol:DeployScript --rpc-url <your_rpc_url> --private-key <your_private_key>
