@@ -4,10 +4,10 @@ pragma solidity ^0.8.14;
 import "./interfaces/IERC20.sol";
 import "./interfaces/IUniswapV3Pool.sol";
 import "./interfaces/IUniswapV3Manager.sol";
-import "./lib/LiquidityMath.sol";
-import "./lib/Path.sol";
-import "./lib/PoolAddress.sol";
-import "./lib/TickMath.sol";
+import "./libs/LiquidityMath.sol";
+import "./libs/Path.sol";
+import "./libs/PoolAddress.sol";
+import "./libs/TickMath.sol";
 
 contract UniswapV3Manager is IUniswapV3Manager {
     using Path for bytes;

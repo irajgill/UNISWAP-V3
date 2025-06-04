@@ -6,7 +6,7 @@ import "abdk-math/ABDKMath64x64.sol";
 
 import "../src/interfaces/IUniswapV3Pool.sol";
 import "../src/interfaces/IUniswapV3Manager.sol";
-import "../src/lib/FixedPoint96.sol";
+import "../src/libs/FixedPoint96.sol";
 import "../src/UniswapV3Factory.sol";
 import "../src/UniswapV3Pool.sol";
 

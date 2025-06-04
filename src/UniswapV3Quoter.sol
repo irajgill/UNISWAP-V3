@@ -2,9 +2,9 @@
 pragma solidity ^0.8.14;
 
 import "./interfaces/IUniswapV3Pool.sol";
-import "./lib/Path.sol";
-import "./lib/PoolAddress.sol";
-import "./lib/TickMath.sol";
+import "./libs/Path.sol";
+import "./libs/PoolAddress.sol";
+import "./libs/TickMath.sol";
 
 contract UniswapV3Quoter {
     using Path for bytes;

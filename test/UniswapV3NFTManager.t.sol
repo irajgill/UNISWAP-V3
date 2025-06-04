@@ -5,9 +5,9 @@ import {Test, stdError} from "forge-std/Test.sol";
 import "./ERC20Mintable.sol";
 import "./TestUtils.sol";
 
-import "../src/lib/LiquidityMath.sol";
+import "../src/libs/LiquidityMath.sol";
 import "../src/UniswapV3Factory.sol";
-import "../src/UniswapV3NFTManager.sol";
+import {UniswapV3NFTManager} from "../src/UniswapV3NFTManager.sol";
 
 contract UniswapV3NFTManagerTest is Test, TestUtils {
     uint24 constant FEE = 3000;

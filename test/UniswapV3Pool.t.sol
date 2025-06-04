@@ -6,8 +6,8 @@ import "./ERC20Mintable.sol";
 import "./UniswapV3Pool.Utils.t.sol";
 
 import "../src/interfaces/IUniswapV3Pool.sol";
-import "../src/lib/LiquidityMath.sol";
-import "../src/lib/TickMath.sol";
+import "../src/libs/LiquidityMath.sol";
+import "../src/libs/TickMath.sol";
 import "../src/UniswapV3Factory.sol";
 import "../src/UniswapV3Pool.sol";
 

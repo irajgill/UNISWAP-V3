@@ -5,8 +5,8 @@ import "forge-std/console.sol";
 import "forge-std/Script.sol";
 
 import "../src/interfaces/IUniswapV3Manager.sol";
-import "../src/lib/FixedPoint96.sol";
-import "../src/lib/Math.sol";
+import "../src/libs/FixedPoint96.sol";
+import "../src/libs/Math.sol";
 import "../src/UniswapV3Factory.sol";
 import "../src/UniswapV3Manager.sol";
 import "../src/UniswapV3Pool.sol";

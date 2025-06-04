@@ -8,15 +8,15 @@ import "./interfaces/IUniswapV3Pool.sol";
 import "./interfaces/IUniswapV3PoolDeployer.sol";
 import "./interfaces/callback/IUniswapV3SwapCallback.sol";
 
-import "./lib/FixedPoint128.sol";
-import "./lib/LiquidityMath.sol";
-import "./lib/Math.sol";
-import "./lib/Oracle.sol";
-import "./lib/Position.sol";
-import "./lib/SwapMath.sol";
-import "./lib/Tick.sol";
-import "./lib/TickBitmap.sol";
-import "./lib/TickMath.sol";
+import "./libs/FixedPoint128.sol";
+import "./libs/LiquidityMath.sol";
+import "./libs/Math.sol";
+import "./libs/Oracle.sol";
+import "./libs/Position.sol";
+import "./libs/SwapMath.sol";
+import "./libs/Tick.sol";
+import "./libs/TickBitmap.sol";
+import "./libs/TickMath.sol";
 
 contract UniswapV3Pool is IUniswapV3Pool {
     using Oracle for Oracle.Observation[65535];
