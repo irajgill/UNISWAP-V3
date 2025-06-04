@@ -1,66 +1,80 @@
-## Foundry
+# UNISWAP-V3
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This project demonstrates the core mechanics of a decentralized exchange (DEX), including smart contract development, liquidity management, and swaps.
 
-Foundry consists of:
+Uniswap V3 is a landmark in decentralized finance, introducing concentrated liquidity and advanced fee structures.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+---
 
-## Documentation
+## Key Concepts
 
-https://book.getfoundry.sh/
+- **How AMMs Work:**  
+  The core formula is  
+  \[
+  X x Y = K
+  \]
+  where \(x\) and \(y\) are token reserves and \(k\) is a constant.
+
+- Core Uniswap V3 smart contracts (factory, pools, manager, quoter, etc.)
+- Support for liquidity provision and swaps across custom price ranges
+- Cross-tick swaps, slippage protection, and fee management
+- NFT positions representing liquidity shares
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- Foundry or Hardhat
+- MetaMask (for frontend interaction)
+- Git
+
+---
+
+### Installation
+
+Clone the repository:
+
+-git clone https://github.com/irajgill/UNISWAP-V3.git
+
+-cd UNISWAP-V3
+
+
+#### Install Dependencies
+
+For the smart contracts (if using Foundry):
+
+-forge install
+
+
+---
 
 ## Usage
 
-### Build
+### Build Contracts
 
-```shell
-$ forge build
-```
+-forge build
 
-### Test
 
-```shell
-$ forge test
-```
+### Run Tests
 
-### Format
+-forge test
 
-```shell
-$ forge fmt
-```
 
-### Gas Snapshots
+### Format Contracts
 
-```shell
-$ forge snapshot
-```
+-forge fmt
 
-### Anvil
 
-```shell
-$ anvil
-```
+### Local Ethereum Node
 
-### Deploy
+-anvil
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
 
-### Cast
+### Deploy Contracts
 
-```shell
-$ cast <subcommand>
-```
+Update your RPC URL and private key, then run:
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+-forge script script/Deploy.s.sol:DeployScript --rpc-url <your_rpc_url> --private-key <your_private_key>
