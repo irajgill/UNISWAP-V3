@@ -2,7 +2,7 @@
 
 This project demonstrates the core mechanics of a decentralized exchange (DEX), including smart contract development, liquidity management, and swaps.
 
-Uniswap V3 is a landmark in decentralized finance, introducing concentrated liquidity and advanced fee structures.
+Uniswap V3 is a landmark in decentralized finance, introducing concentrated liquidity and advanced fee structures..
 
 ---
 
